@@ -1,0 +1,26 @@
+As we employ MIE model to constraint the TROPOMI SSA and use this inc ombination with AERONET to compute the BCsize mixing state proxy, total aerosol number column(Ncol) and BCmass.
+The resultant output data becomes highly irregular with point data at each lat/lon since the product initially extracted TROPOMAER SSA/AOD/AAOD (V1.1) are at 7*3.5km resolution we use 
+the closest possible resolution to regrid this with minor inaccuracies of 
+The code reads input data containing longitude, latitude, BCmass, and Ncol columns, divides the domain into a regularly spaced grid, and estimates the corresponding BCmass and Ncol 
+values for each grid cell based on surrounding data. 
+The main steps include:
+1.Reading input data
+2.Defining grid boundaries and step sizes
+3.Creating a fine grid covering the whole domain
+4.Looping through dates and processing per-day data
+4a. Calculating distances between each measurement and grid cells
+4b. Computing the weights based on the ratio of product of distances to grid step sizes
+4c. Estimating BCmass, Ncol, and weights for each grid cell
+4d. Visualizing estimation results
+4e. Saving intermediate results
+
+Concepts related to IDW:
+Weight calculations consider the proximity of measurements to grid cells.
+Measurements closer to grid cells receive higher weights, reflecting IDW's principle of increased importance assigned to nearby samples.
+
+Concepts related to Shepard's technique:
+Weights decrease smoothly as measurements move away from grid cells, aligning with the idea of reduced influence exhibited by Shepard's method.
+Sudden transitions in influencing factors found in traditional IDW methods are avoided, allowing for a continuous representation reminiscent of Shepard's technique.
+
+Mass conservation occurs locally within each grid box. Since the custom distance-based weighting method allocates exact fractions of the total mass contributed by each measurement to adjacent grid cells,
+no loss or gain of mass happens during the computation process. Additionally, since every measurement participates only once in the weight calculation, the mass remains balanced throughout the procedure.
